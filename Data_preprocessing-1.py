@@ -45,6 +45,7 @@ for i in range(len(new_music_data["salami_id"])):
             music_path.append(temp_list)
         else:
             music_path = music_path
+            
 music_id_with_file = pd.DataFrame(music_path, columns=['salami_id','file_name'])
 
 # merge the music_id_with_file and new_music_data
@@ -60,52 +61,64 @@ print(len(genre_statistics_original))
 
 # calculate the data after the cracked into the 3 seconds patches
 
-# # interaction the music filepath and the salami id
-# music_all_path = []
-# for i in range(len(music_ids)):
-#     for j in range(len(music_path)):
-#         if music_path[j][0] == list(music_ids)[i]:
-#             music_all_path.append(music_path[j])
-#         else:
-#             music_all_path = music_all_path
+# interaction the music filepath and the salami id
+music_all_path = []
+for i in range(len(salami_data["salami_id"])):
+    for j in range(len(music_path)):
+        if music_path[j][0] == list(salami_data["salami_id"])[i]:
+            music_all_path.append(music_path[j])
+        else:
+            music_all_path = music_all_path
 
 # crab all the path of labels into the list
-temp_all = os.listdir("../salami-data-public/annotations/")
+temp_all = os.listdir("../renew-salami-dataset/annotations/")
 for i in range(len(temp_all)):
     temp_all[i] = int(temp_all[i])
 temp_all.sort() # number in the annotation
-for i in range(len(music_all_path)):
-    for j in range(len(temp_all)):
-        if temp_all[j] == music_all_path[i][0]:
-            if os.path.isfile("../salami-data-public/annotations/{}/parsed/textfile1_functions.txt".format(music_all_path[i][0])):
-                music_all_path[i].append(pd.read_csv("../salami-data-public/annotations/{}/parsed/textfile1_functions.txt".format(music_all_path[i][0]), sep="\t",  header=None))
-            else:
-                music_all_path[i].append(pd.read_csv("../salami-data-public/annotations/{}/parsed/textfile2_functions.txt".format(music_all_path[i][0]), sep="\t",  header=None))
-        else:
-            music_all_path = music_all_path
-final_all_path_and_labels = []    
-for i in range(len(music_all_path)):
-    if len(music_all_path[i]) != 3 :
-        final_all_path_and_labels = final_all_path_and_labels
-    else :
-        final_all_path_and_labels.append(music_all_path[i])
+temp_all = pd.DataFrame(temp_all, columns=['salami_id'])
+salami_data = pd.merge(salami_data, temp_all, how="inner")
+salami_structure_label = []
+for i in range(len(salami_data['salami_id'])):
+    salami_id_label = []
+    if os.path.isfile("../renew-salami-dataset/annotations/{}/parsed/textfile1_functions.txt".format(salami_data['salami_id'][i])):
+        salami_id_label.append(salami_data['salami_id'][i])
+        salami_id_label.append(pd.read_csv("../renew-salami-dataset/annotations/{}/parsed/textfile1_functions.txt".format(salami_data['salami_id'][i]), sep="\t",  header=None))
+        salami_structure_label.append(salami_id_label)
+    else:
+        salami_id_label.append(salami_data['salami_id'][i])
+        salami_id_label.append(pd.read_csv("../renew-salami-dataset/annotations/{}/parsed/textfile2_functions.txt".format(salami_data['salami_id'][i]), sep="\t",  header=None))
+        salami_structure_label.append(salami_id_label)
+salami_structure_label = pd.DataFrame(salami_structure_label, columns=["salami_id","labels"]) 
+salami_structure_label['labels'][0]
 
 # calculate the number categories of labels
+final_all_path_and_labels = []    
+for i in range(len(salami_structure_label)):
+    final_all_path_and_labels.append(salami_structure_label["labels"][i])
+
 all_labels = []
 for i in range(len(final_all_path_and_labels)):
-    all_labels.append(final_all_path_and_labels[i][2])
+    for j in range(len(final_all_path_and_labels[i][1])):
+        all_labels.append(final_all_path_and_labels[i][1][j])
 
-num_labels = []
+pd.DataFrame(all_labels).value_counts().to_csv("original_sum_of_categories.csv", sep="\t") # Save the sum of categories of labels data
+
+# The labels we want (1)
+rest_labels = ['Verse', 'Silence', 'Chorus', 'End', 'Outro', 'Intro', 'Bridge', 'Intrumental', 'Interlude', 'Fade-out',\
+                'Solo', 'Pre-Verse', 'silence', 'Pre-Chorus', 'Head', 'Coda', 'Theme', 'Transition',\
+                'Main_Theme', 'Development', 'Secondary_theme', 'Secondary_Theme', 'outro']
+
+rest_all_labels = []
 for i in range(len(all_labels)):
-    num_labels.append(all_labels[i][1].value_counts())
+    for j in range(len(rest_labels)):
+        if all_labels[i] == rest_labels[j]:
+            rest_all_labels.append(all_labels[i])
+        else :
+            rest_all_labels = rest_all_labels
 
-all_labels_and_freq = pd.concat(num_labels, axis=1)
-all_labels_and_freq = all_labels_and_freq.fillna(0)
-all_labels_and_freq.sum(axis=1)
+pd.DataFrame(rest_all_labels).value_counts().to_csv("new_sum_of_categories.csv", sep="\t")
 
-all_labels_and_freq.to_csv("original_num_of_categories.csv", sep="\t") # Save the number of categories of labels data
-all_labels_and_freq.sum(axis=1).to_csv("original_sum_of_categories.csv", sep="\t") # Save the sum of categories of labels data
-
+# 
 #=======================================================================================================================================
 # rest_labels = ['Verse', 'Silence', 'Chorus', 'End', 'Outro', 'Intro', 'Bridge', 'Intrumental', 'Interlude', 'Fade-out',\
 #                'Solo', 'Pre-Verse', 'silence', 'Pre-Chorus', 'Head', 'Coda', 'Theme', 'Transition',\
@@ -144,7 +157,7 @@ all_labels_and_freq.sum(axis=1).to_csv("original_sum_of_categories.csv", sep="\t
 #===========================================================================================================================================================
 
 # Then we delete the short segment and deal with all same labels (ex: outro and Outro),
-# and calculate the all_labels_and_freq again.
+# and calculate the all_labels_and_freq again. (rest_labels-(1))
 
 # step 1 : crack the data to the segments 
 seg = []
