@@ -10,13 +10,7 @@ import pandas as pd
 import librosa
 import numpy as np
 import os
-import tensorflow as tf
-from tensorflow.keras import layers
-import random
-import sklearn
-from tqdm import tqdm, trange
-import matplotlib.pyplot as plt
-from time import sleep
+from tqdm import tqdm
 
 all_music_data = pd.read_csv("../salami-data-public/metadata/SALAMI_iTunes_library.csv", sep=',')
 all_music_data_2 = pd.read_csv("./salami_youtube_pairings.csv", sep=",")
