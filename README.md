@@ -1,4 +1,4 @@
-# Salami-dataset-used-in-structure-classification (Still working in the progress (.py ) )
+# Salami-dataset-used-in-structure-classification
 
 1. This project reorganized the salami dataset.
 2. Merge two project together.
