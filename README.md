@@ -1,4 +1,4 @@
-# Salami-dataset-used-in-structure-classification
+# Salami-dataset-used-in-music-structure-classification
 
 1. This project reorganized the salami dataset.
 2. Merge two project together.
