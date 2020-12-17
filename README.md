@@ -7,8 +7,10 @@
   
 *  "New_salami_dataframe.csv" - Merging two files (salami_youtube_pairings.csv and SALAMI_iTunes_library.csv) into the new file and add the structure annotation into it.
 *  "original_sum_of_categories.csv" - Sum of all categories of structure labels.
-*  "new_sum_of_categories.csv" - Sum of the structure labels after selected. ('Verse', 'Silence', 'Chorus', 'End', 'Outro', 'Intro', 'Bridge', 'Intrumental', 'Interlude', 'Fade-out', 'Solo', 'Pre-Verse', 'silence', 'Pre-Chorus', 'Head', 'Coda', 'Theme', 'Transition', 'Main_Theme', 'Development', 'Secondary_theme', 'Secondary_Theme', 'outro')
-*  "new_sum_of_categories_2.csv" - Sum of the structure labels after selected.('Verse', 'Chorus', 'Outro', 'Intro', 'Bridge', 'Intrumental', 'Pre-Verse', 'Pre-Chorus', 'outro')
+*  "new_sum_of_categories.csv" - Sum of the structure labels after selected. 
+('Verse', 'Silence', 'Chorus', 'End', 'Outro', 'Intro', 'Bridge', 'Intrumental', 'Interlude', 'Fade-out', 'Solo', 'Pre-Verse', 'silence', 'Pre-Chorus', 'Head', 'Coda', 'Theme', 'Transition', 'Main_Theme', 'Development', 'Secondary_theme', 'Secondary_Theme', 'outro')
+*  "new_sum_of_categories_2.csv" - Sum of the structure labels after selected.
+('Verse', 'Chorus', 'Outro', 'Intro', 'Bridge', 'Intrumental', 'Pre-Verse', 'Pre-Chorus', 'outro')
 *  "genre_original.csv" - Sum of all genre in the SALAMI dataset.
 
 ## Reference
